@@ -3,12 +3,16 @@ from flask import Flask,request,Response
 import flask_monitoringdashboard as dashboard
 import os
 from flask_cors import CORS,cross_origin
+from src.trainingModel import train_Model
+from src.training_Validation_insertion import train_validation
 
-from src import trainingModel
 
 #trainingModel.hello()
 
-os.putenv('LANG', 'en_US.UTF-8')
+obj = train_Model()
+obj.modelTraining()
+
+"""os.putenv('LANG', 'en_US.UTF-8')
 os.putenv('LC_ALL', 'en_US.UTF-8')
 
 app = Flask(__name__)
@@ -19,23 +23,26 @@ CORS(app)
 @cross_origin()
 def trainRouiteClient():
     try:
-       pass
-    except ValueError:
-        pass
+        if request.json['folderpath'] is not None:
+            path = request.json['folderpath']
+            train_valObj = train_validation(path)
+            train_valObj.training_validaiton()
+
+            trainModelObj = train_Model()
+            trainModelObj.trainModel()
+
+    except Exception as e:
+        return Response("Error occurred! " + str(e))
+    return Response("Training is successfully!!")
 
 
-import src.Generic.Utility as u
-print(u.read_yamlfile(os.path.join("config", "params.yaml"))['config']['training_schema'])
-
-
-
-'''
-port = int(os.getenv("PORT"))
+DEFAULT_PORT =1234
+port = int(os.getenv("PORT",DEFAULT_PORT))
 if __name__ == "__main__":
     host="0.0.0.0"
-    app.debug(True)
+    app.run(debug=True)
     httpd = simple_server.make_server(host, port, app)
     print("Serving on %s %d" % (host, port))
     httpd.serve_forever()
-'''
+"""
 

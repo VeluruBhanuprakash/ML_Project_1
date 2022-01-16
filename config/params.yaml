@@ -2,3 +2,11 @@ config:
   params: config/params.yaml
   training_schema: config/training_schema.json
   prediction_schema: config/prediction_schema.json
+
+db:
+  training: Training_Database/
+
+training_filepath:
+  good_raw : Training_Raw_files_validated/Good_Raw
+  bad_raw : Training_Raw_files_validated/Bad_Raw
+
